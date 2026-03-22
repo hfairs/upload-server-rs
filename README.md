@@ -1,29 +1,22 @@
 # upload-server-rs
 
-A high-performance, streaming file upload server built in Rust, purpose-designed for transferring large binary assets such as AI model artifacts, datasets, and checkpoints. It handles uploads with minimal memory overhead by streaming data directly to the backend without buffering entire files in memory.
-
-The architecture follows Domain-Driven Design (DDD) with a Ports and Adapters (Hexagonal Architecture) pattern, cleanly separating core domain logic from infrastructure concerns. This makes the system highly extensible: both the inbound transport layer and the storage backend are defined as ports with swappable adapter implementations.
-
-Currently supported adapters:
-
-HTTP — inbound transport for streaming multipart and chunked uploads
-MinIO / S3 — outbound storage backend via the S3-compatible API
-
-Additional adapters — such as gRPC or SFTP on the ingress side, or alternative object stores and local filesystem targets on the egress side — can be introduced without touching domain logic.
+A high-performance, streaming file upload server built in Rust, purpose-designed for transferring large binary assets such as machine learning model artifacts, datasets, and checkpoints. Uploads are streamed directly to the backend with minimal memory overhead — no full-file buffering.
 
 ## Architecture
 
-Hexagonal (ports & adapters):
+The system follows **Domain-Driven Design (DDD)** with a **Ports & Adapters (Hexagonal Architecture)** pattern, cleanly separating core domain logic from infrastructure concerns. Both the inbound transport layer and the storage backend are defined as ports with swappable adapter implementations, making the system straightforward to extend:
 
 ```
 adapters/incoming   → HTTP (Axum)
 applications        → Uploader (orchestration)
 domain/ports        → UploadService (service), ObjectStorageSpi (SPI)
 domain/value_objects→ Bucket, StoragePath, Object, Error, etc.
-adapters/outgoing   → MinIO adapter
+adapters/outgoing   → MinIO adapter (S3-compatible)
 infrastructure      → HTTP error mapping
 testing             → In-memory fake client
 ```
+
+Additional adapters — such as gRPC or SFTP implementing the incoming port (UploadService), or alternative object stores and local filesystem implementing the outgoing port (ObjectStorageSpi) — can be introduced without touching domain logic.
 
 ## Local MinIO setup
 
