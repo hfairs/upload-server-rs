@@ -1,6 +1,15 @@
 # upload-server-rs
 
-Streaming upload server backed by S3-compatible object storage (MinIO).
+A high-performance, streaming file upload server built in Rust, purpose-designed for transferring large binary assets such as AI model artifacts, datasets, and checkpoints. It handles uploads with minimal memory overhead by streaming data directly to the backend without buffering entire files in memory.
+
+The architecture follows Domain-Driven Design (DDD) with a Ports and Adapters (Hexagonal Architecture) pattern, cleanly separating core domain logic from infrastructure concerns. This makes the system highly extensible: both the inbound transport layer and the storage backend are defined as ports with swappable adapter implementations.
+
+Currently supported adapters:
+
+HTTP — inbound transport for streaming multipart and chunked uploads
+MinIO / S3 — outbound storage backend via the S3-compatible API
+
+Additional adapters — such as gRPC or SFTP on the ingress side, or alternative object stores and local filesystem targets on the egress side — can be introduced without touching domain logic.
 
 ## Architecture
 
