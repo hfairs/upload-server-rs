@@ -1,0 +1,23 @@
+[package]
+name = "upload-server-rs"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+test-support = []
+
+[dependencies]
+anyhow = "1"
+async-trait = "0.1"
+axum = { version = "0.8", features = ["multipart"] }
+bytes = "1"
+dashmap = "6"
+dotenv = "0.15"
+futures = "0.3"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+minio = "0.3"
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+url = { version = "2", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }

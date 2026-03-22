@@ -1,0 +1,3 @@
+mod object_storage_minio_adapter;
+
+pub use object_storage_minio_adapter::ObjectStorageMinIOAdapter;
